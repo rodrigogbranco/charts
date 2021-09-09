@@ -10,7 +10,7 @@ import plotly.express as px
 marker_colors = ['#3D9970', '#FF4136', '#FF851B']
 marker_patterns_shape= ['.', 'x', '+']
 
-evs_name = {'vehev1' : 'EV1', 'vehev2' : 'EV2', 'vehev3' : 'EV3'}
+evs_name = {'vehev1' : 'EV1', 'vehev2' : 'EV2', 'vehev3' : 'EV3', 'expanded-center' : 'Expanded Center Of São Paulo'}
 algs_name = {
         'kapusta2': 'Kapusta et al (2017)',
         'allgreen': 'Hyphotetical all-green',
@@ -22,7 +22,8 @@ algs_name = {
 
 scenarios = {
     'turin' : 'Turin TuSTScenario',
-    'cologne' : 'TAPAS Cologne'
+    'cologne' : 'TAPAS Cologne',
+    'metro-od-2017' : 'Metro OD 2017 Survey (Expanded Center of São Paulo)'
 }
 
 y_axis_labels = {
