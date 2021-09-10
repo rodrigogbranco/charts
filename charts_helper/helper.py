@@ -7,18 +7,18 @@ import geopandas as gpd
 import shapely.geometry
 import plotly.express as px
 
-marker_colors = ['#3D9970', '#FF4136', '#FF851B']
+marker_colors = ['#FF851B', '#FF4136', '#3D9970']
 marker_patterns_shape= ['.', 'x', '+']
 
-evs_name = {'vehev1' : 'EV1', 'vehev2' : 'EV2', 'vehev3' : 'EV3', 'expanded-center' : 'Expanded Center Of São Paulo'}
+evs_name = {'vehev1' : 'EV1', 'vehev2' : 'EV2', 'vehev3' : 'EV3', 'boundary' : 'Experiment Area'}
 algs_name = {
         'kapusta2': 'Kapusta et al (2017)',
         'allgreen': 'Hyphotetical all-green',
         'tpn3' : 'TPN',
-        'no-preemption' : 'No Preemption',
-        'tpn' : 'TPN (Old)',
-        'kapusta': 'Kapusta et al (2017) [1st version]'
+        'no-preemption' : 'No Preemption'
     }
+
+algs_order = ['kapusta2', 'tpn3', 'allgreen', 'no-preemption']
 
 scenarios = {
     'turin' : 'Turin TuSTScenario',
@@ -33,6 +33,15 @@ y_axis_labels = {
     'rt' : 'Runtime (s)'
 }
 
+title_label = {
+    'route' : 'Routes - {}',
+    'tl-imp' : 'Time-Loss Improvement - {}',
+    'tl-perc' : 'Time-Loss Improvement - {}',
+    'tl-no-preemption' : 'Time-Loss - No Preemption - {}',
+    'tl-algs' : 'Time-Loss - Solutions - {}',
+    'runtime' : 'Runtime - Solutions - {}'
+}
+
 def make_boxplot_grouped(df,metric,title_label):
     evs = sorted(df['ev'].unique().tolist())
     algs = df['alg'].unique().tolist()
@@ -41,19 +50,19 @@ def make_boxplot_grouped(df,metric,title_label):
 
     fig = go.Figure()
 
-    for alg in algs:
+    for index,alg in enumerate([alg for alg in algs_order if alg in algs]):
         complete_values = []
         xlabels = []
         for ev in evs:
             values = df[(df['alg'] == alg) & (df['ev'] == ev)][metric].tolist()
-            xlabels += list(np.repeat(evs_name[ev], len(values)))
+            xlabels += [evs_name[ev]]*len(values)
             complete_values += values
 
         fig.add_trace(go.Box(
             y=complete_values,
             x=xlabels,
             name=algs_name[alg],
-            marker_color=marker_colors[algs.index(alg)]
+            marker_color=marker_colors[index]
         ))
 
     fig.update_layout(
@@ -70,10 +79,8 @@ def make_boxplot(df,metric,title_label):
 
     df = df[df[metric].notnull()]
 
-    count = 0
     for ev in evs:
         fig.add_trace(go.Box(y=df[(df['alg'] == 'no-preemption') & (df['ev'] == ev)][metric].tolist(), name=evs_name[ev]))
-        count += 1
 
     fig.update_layout(
         yaxis_title=y_axis_labels[metric],
@@ -89,7 +96,8 @@ def csv_to_geo(df):
     geo_df2 = geo_df.groupby(['scenario', 'ev'])['geometry'].apply(lambda x: LineString(x.tolist()))
     return gpd.GeoDataFrame(geo_df2, geometry='geometry')  
 
-def make_map(geo_df,zoom,title):
+def make_map(df,zoom,title):
+    geo_df = csv_to_geo(df)
     lats = []
     lons = []
     names = []
@@ -118,3 +126,6 @@ def make_map(geo_df,zoom,title):
     fig = px.line_mapbox(lat=lats, lon=lons, hover_name=names, mapbox_style="open-street-map", zoom=zoom, color=colors, title=title)
     fig.update_layout(margin={"r":0,"t":50,"l":0,"b":0})
     fig.show()        
+
+def make_title(title,key):
+    return title_label[title].format(scenarios[key])
