@@ -7,10 +7,12 @@ import geopandas as gpd
 import shapely.geometry
 import plotly.express as px
 
-marker_colors = ['#FF851B', '#FF4136', '#3D9970']
-marker_patterns_shape= ['.', 'x', '+']
+#marker_colors = ['#FF851B', '#FF4136', '#3D9970', 'black']
+#marker_patterns_shape= ['.', 'x', '+']
 
-evs_name = {'vehev1' : 'EV1', 'vehev2' : 'EV2', 'vehev3' : 'EV3', 'boundary' : 'Experiment Area'}
+evs_name = {'vehev1' : 'EV1', 'vehev2' : 'EV2', 'vehev3' : 'EV3', 
+            'vehev4' : 'EV1-Synthetic', 'vehev5' : 'EV2-Synthetic', 'vehev6' : 'EV3-Synthetic', 
+            'boundary' : 'Experiment Area', 'expcenter': 'Expanded Center'}
 algs_name = {
         'kapusta2': 'Kapusta et al (2017)',
         'allgreen': 'Hyphotetical all-green',
@@ -23,7 +25,8 @@ algs_order = ['kapusta2', 'tpn3', 'allgreen', 'no-preemption']
 scenarios = {
     'turin' : 'Turin TuSTScenario',
     'cologne' : 'TAPAS Cologne',
-    'metro-od-2017' : 'Metro OD 2017 Survey (Expanded Center of São Paulo)'
+    'metro-od-2017' : 'Metro OD 2017 Survey (Expanded Center of São Paulo)',
+    'metro-od-2017-zones' : 'Zones - Metro OD 2017'
 }
 
 y_axis_labels = {
@@ -62,7 +65,7 @@ def make_boxplot_grouped(df,metric,title_label):
             y=complete_values,
             x=xlabels,
             name=algs_name[alg],
-            marker_color=marker_colors[index]
+            #marker_color=marker_colors[index]
         ))
 
     fig.update_layout(
@@ -105,7 +108,11 @@ def make_map(df,zoom,title):
 
     for index, row in geo_df.iterrows():
         feature = row['geometry']
-        name = evs_name[index[1]]
+
+        try:
+            name = int(index[1])
+        except ValueError:
+            name = evs_name[index[1]]
 
         if isinstance(feature, shapely.geometry.linestring.LineString):
             linestrings = [feature]
