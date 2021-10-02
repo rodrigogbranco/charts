@@ -7,24 +7,20 @@ import geopandas as gpd
 import shapely.geometry
 import plotly.express as px
 
-#marker_colors = ['#FF851B', '#FF4136', '#3D9970', 'black']
-#marker_patterns_shape= ['.', 'x', '+']
-
 evs_name = {'vehev1' : 'EV1', 'vehev2' : 'EV2', 'vehev3' : 'EV3', 
             'vehev4' : 'EV1-Synthetic', 'vehev5' : 'EV2-Synthetic', 'vehev6' : 'EV3-Synthetic', 
             'vehev7' : 'EV4',
             'boundary' : 'Experiment Area', 'expcenter': 'Expanded Center'}
 algs_name = {
-        'kapusta2': 'Kapusta et al (2017)',
-        'allgreen': 'Hyphotetical all-green',
-        #'tpn3' : 'TPN',
+        'kapusta2': 'Queue based',
+        'allgreen': 'All Green',
         'tpn4' : 'TPN',
         'fuzzy' : 'Fuzzy',
         'rfid' : 'RFId',
         'no-preemption' : 'No Preemption',
     }
 
-algs_order = [ 'rfid', 'fuzzy', 'kapusta2', #'tpn3', 
+algs_order = [ 'rfid', 'fuzzy', 'kapusta2', 
                 'tpn4', 'allgreen', 'no-preemption']
 
 scenarios = {
@@ -58,7 +54,7 @@ def make_boxplot_grouped(df,metric,title_label):
 
     fig = go.Figure()
 
-    for index,alg in enumerate([alg for alg in algs_order if alg in algs]):
+    for alg in [alg for alg in algs_order if alg in algs]:
         complete_values = []
         xlabels = []
         for ev in evs:
@@ -70,8 +66,7 @@ def make_boxplot_grouped(df,metric,title_label):
         fig.add_trace(go.Box(
             y=complete_values,
             x=xlabels,
-            name=algs_name[alg],
-            #marker_color=marker_colors[index]
+            name=algs_name[alg]
         ))
 
     fig.update_layout(
