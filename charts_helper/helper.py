@@ -12,18 +12,23 @@ import plotly.express as px
 
 evs_name = {'vehev1' : 'EV1', 'vehev2' : 'EV2', 'vehev3' : 'EV3', 
             'vehev4' : 'EV1-Synthetic', 'vehev5' : 'EV2-Synthetic', 'vehev6' : 'EV3-Synthetic', 
+            'vehev7' : 'EV4',
             'boundary' : 'Experiment Area', 'expcenter': 'Expanded Center'}
 algs_name = {
         'kapusta2': 'Kapusta et al (2017)',
         'allgreen': 'Hyphotetical all-green',
-        'tpn3' : 'TPN',
-        'no-preemption' : 'No Preemption'
+        #'tpn3' : 'TPN',
+        'tpn4' : 'TPN',
+        'fuzzy' : 'Fuzzy',
+        'rfid' : 'RFId',
+        'no-preemption' : 'No Preemption',
     }
 
-algs_order = ['kapusta2', 'tpn3', 'allgreen', 'no-preemption']
+algs_order = [ 'rfid', 'fuzzy', 'kapusta2', #'tpn3', 
+                'tpn4', 'allgreen', 'no-preemption']
 
 scenarios = {
-    'turin' : 'Turin TuSTScenario',
+    'turin' : 'Turin SUMO Traffic (TuST) Scenario',
     'cologne' : 'TAPAS Cologne',
     'metro-od-2017' : 'Metro OD 2017 Survey (Expanded Center of São Paulo)',
     'metro-od-2017-zones' : 'Zones - Metro OD 2017'
@@ -57,7 +62,8 @@ def make_boxplot_grouped(df,metric,title_label):
         complete_values = []
         xlabels = []
         for ev in evs:
-            values = df[(df['alg'] == alg) & (df['ev'] == ev)][metric].tolist()
+            tmp_df = df[(df['alg'] == alg) & (df['ev'] == ev)][metric]
+            values = tmp_df.nlargest(tmp_df.size-1).tolist()
             xlabels += [evs_name[ev]]*len(values)
             complete_values += values
 
@@ -83,7 +89,8 @@ def make_boxplot(df,metric,title_label):
     df = df[df[metric].notnull()]
 
     for ev in evs:
-        fig.add_trace(go.Box(y=df[(df['alg'] == 'no-preemption') & (df['ev'] == ev)][metric].tolist(), name=evs_name[ev]))
+        tmp_df = df[(df['alg'] == 'no-preemption') & (df['ev'] == ev)][metric]
+        fig.add_trace(go.Box(y=tmp_df.nlargest(tmp_df.size-1).tolist(), name=evs_name[ev]))
 
     fig.update_layout(
         yaxis_title=y_axis_labels[metric],
