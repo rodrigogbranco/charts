@@ -1,2 +1,4 @@
 charts_helper/__pycache__/*
 *.pyc
+.vscode/
+*.pdf

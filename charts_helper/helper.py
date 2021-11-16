@@ -6,6 +6,7 @@ from shapely.geometry import Point, LineString
 import geopandas as gpd
 import shapely.geometry
 import plotly.express as px
+import plotly.io as pio
 
 evs_name = {'vehev1' : 'EV1', 'vehev2' : 'EV2', 'vehev3' : 'EV3', 
             'vehev4' : 'EV1-Synthetic', 'vehev5' : 'EV2-Synthetic', 'vehev6' : 'EV3-Synthetic', 
@@ -101,7 +102,7 @@ def csv_to_geo(df):
     geo_df2 = geo_df.groupby(['scenario', 'ev'])['geometry'].apply(lambda x: LineString(x.tolist()))
     return gpd.GeoDataFrame(geo_df2, geometry='geometry')  
 
-def make_map(df,zoom,title):
+def make_map(df,zoom,title,figname):
     geo_df = csv_to_geo(df)
     lats = []
     lons = []
@@ -134,7 +135,8 @@ def make_map(df,zoom,title):
 
     fig = px.line_mapbox(lat=lats, lon=lons, hover_name=names, mapbox_style="open-street-map", zoom=zoom, color=colors, title=title)
     fig.update_layout(margin={"r":0,"t":50,"l":0,"b":0})
-    fig.show()        
+    fig.show()
+    pio.write_image(fig, '{}.pdf'.format(figname), width=600, height=480)        
 
 def make_title(title,key):
     return title_label[title].format(scenarios[key])
