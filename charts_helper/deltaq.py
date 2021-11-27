@@ -13,7 +13,7 @@ t_flush = 5
 Q_vector = [0, 50, 100, 150, 200, 250, 300, 500]
 t_alpha = 3
 
-algs = ['TPN', 'Queue Based']
+algs = ['tpn', 'queue']
 
 
 def get_df(orig_v, cycle_length):
@@ -31,9 +31,9 @@ def get_df(orig_v, cycle_length):
 
         for alg in algs:
             if t_ev - t_queue >= 0:
-                if alg == 'TPN':
+                if alg == 'tpn':
                     t_offset = max(0.5*(t_ev - t_queue - t_flush), 0)
-                elif alg == 'Queue Based':
+                elif alg == 'queue':
                     t_offset = max(t_ev - t_queue, 0)
 
                 sq_part = math.sqrt(2*a*k*s**3*(t_queue + t_offset) + s**4)/a
@@ -56,7 +56,7 @@ def get_df(orig_v, cycle_length):
                         data['Metric'].append(metric)
                         data['Metric Value'].append(delta_q if metric == u'ΔQ (m)' else (0 if alg == 'Queue Based' else t_offset))
                         data['D'].append(d)
-                        data['Instance'].append('Algorithm={} v={}km/h CycleLength={}s'.format(alg,orig_v,cycle_length))
+                        data['Instance'].append('Alg={}-v={}-CL={}'.format(alg,orig_v,cycle_length))
                     
 
     return pd.DataFrame(data)

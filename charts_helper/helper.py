@@ -27,7 +27,7 @@ algs_order = [ 'rfid', 'fuzzy', 'kapusta2',
 scenarios = {
     'turin' : 'Turin SUMO Traffic (TuST) Scenario',
     'cologne' : 'TAPAS Cologne',
-    'metro-od-2017' : 'Metro OD 2017 Survey (Expanded Center of São Paulo)',
+    'metro-od-2017' : 'Metro OD 2017 (Exp. Center of SP)',
     'metro-od-2017-zones' : 'Zones - Metro OD 2017'
 }
 
@@ -47,7 +47,7 @@ title_label = {
     'runtime' : 'Runtime - Solutions - {}'
 }
 
-def make_boxplot_grouped(df,metric,title_label):
+def make_boxplot_grouped(df,metric,title_label,figname):
     evs = sorted(df['ev'].unique().tolist())
     algs = df['alg'].unique().tolist()
 
@@ -73,11 +73,15 @@ def make_boxplot_grouped(df,metric,title_label):
     fig.update_layout(
         yaxis_title=y_axis_labels[metric],
         title=title_label,
-        boxmode='group'
+        boxmode='group',
+        font=dict(
+            size=14
+        )
     )
-    fig.show() 
+    fig.show()
+    pio.write_image(fig, 'figs/{}.png'.format(figname), format='png', width=600, height=480) 
 
-def make_boxplot(df,metric,title_label):
+def make_boxplot(df,metric,title_label,figname):
     evs = sorted(df['ev'].unique().tolist())
 
     fig = go.Figure()
@@ -90,10 +94,14 @@ def make_boxplot(df,metric,title_label):
 
     fig.update_layout(
         yaxis_title=y_axis_labels[metric],
-        title=title_label
+        title=title_label,
+        font=dict(
+            size=14
+        )        
     )        
 
-    fig.show()  
+    fig.show()
+    pio.write_image(fig, 'figs/{}.png'.format(figname), format='png', width=600, height=480)  
 
 def csv_to_geo(df):
     geometry = [Point(xy) for xy in zip(df.lon, df.lat)]
@@ -134,9 +142,14 @@ def make_map(df,zoom,title,figname):
             colors = np.append(colors, [name]*(len(y)+1))
 
     fig = px.line_mapbox(lat=lats, lon=lons, hover_name=names, mapbox_style="open-street-map", zoom=zoom, color=colors, title=title)
-    fig.update_layout(margin={"r":0,"t":50,"l":0,"b":0})
+    fig.update_layout(
+        margin={"r":0,"t":50,"l":0,"b":0},
+        font=dict(
+            size=14
+        )
+    )
     fig.show()
-    pio.write_image(fig, '{}.pdf'.format(figname), width=600, height=480)        
+    pio.write_image(fig, 'figs/{}.png'.format(figname), format='png', width=600, height=480)        
 
 def make_title(title,key):
     return title_label[title].format(scenarios[key])
