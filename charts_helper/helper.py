@@ -11,6 +11,8 @@ import plotly.io as pio
 evs_name = {'vehev1' : 'EV1', 'vehev2' : 'EV2', 'vehev3' : 'EV3', 
             'vehev4' : 'EV1-Synthetic', 'vehev5' : 'EV2-Synthetic', 'vehev6' : 'EV3-Synthetic', 
             'vehev7' : 'EV4',
+            'veh11651' : 'EV',
+            'veh4856' : 'EV',
             'boundary' : 'Experiment Area', 'expcenter': 'Expanded Center'}
 algs_name = {
         'kapusta2': 'Queue based',
@@ -28,7 +30,9 @@ scenarios = {
     'turin' : 'Turin SUMO Traffic (TuST) Scenario',
     'cologne' : 'TAPAS Cologne',
     'metro-od-2017' : 'Metro OD 2017 (Exp. Center of SP)',
-    'metro-od-2017-zones' : 'Zones - Metro OD 2017'
+    'metro-od-2017-zones' : 'Zones - Metro OD 2017',
+    'synth-sp': 'Synthetic SP',
+    'synth-ny': 'Synthetic NY'
 }
 
 y_axis_labels = {
