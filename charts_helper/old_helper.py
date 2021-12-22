@@ -16,18 +16,22 @@ nvec = {
     }
 }
 
-algs_order = [ 'rfid_dd!250_nc!2', 'rfid_dd!250_nc!5', 'rfid_dd!1000_nc!2', 'rfid_dd!1000_nc!5', 'djahel_wc!start_el!high', 'djahel_wc!start_el!medium', 'djahel_wc!start_el!low', 'kapusta2', 'petri_lc!False', 'allgreen' ]
+algs_order = [ 'rfid_dd!250_nc!2', 'rfid_dd!250_nc!5', 'rfid_dd!1000_nc!2', 'rfid_dd!1000_nc!5', 'rfid', 'djahel_wc!start_el!high', 'djahel_wc!start_el!medium', 'djahel_wc!start_el!low', 'fuzzy', 'kapusta2', 'petri_lc!False', 'tpn4', 'allgreen' ]
 
 algs_names = {
     'petri_lc!False' : 'TPN',
     'rfid_dd!1000_nc!2' : 'RFID-100-2', 'rfid_dd!250_nc!5' : 'RFID-25-5', 'rfid_dd!1000_nc!5' : 'RFID-100-5', 'rfid_dd!250_nc!2' : 'RFID-25-2',
+    'rfid' : 'RFID-100-5',
     'djahel_wc!start_el!high' : 'Fuzzy-H', 'djahel_wc!start_el!medium' : 'Fuzzy-M', 'djahel_wc!start_el!low' : 'Fuzzy-L',
+    'fuzzy' : 'Fuzzy-H',
     'kapusta2' : 'Queue based',
+    'tpn4' : 'New TPN',
     'allgreen' : 'All Green'
 }
 
 evs_name = {'veh11651' : 'EV',
-            'veh4856' : 'EV'}   
+            'veh4856' : 'EV',
+            'vehev1' : 'EV'}   
 
 y_axis_labels = {
     'imp' : 'Time-Loss Improvement (times)',
