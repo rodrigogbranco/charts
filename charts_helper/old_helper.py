@@ -16,14 +16,23 @@ nvec = {
     }
 }
 
-algs_order = [ 'rfid_dd!250_nc!2', 'rfid_dd!250_nc!5', 'rfid_dd!1000_nc!2', 'rfid_dd!1000_nc!5', 'rfid', 'djahel_wc!start_el!high', 'djahel_wc!start_el!medium', 'djahel_wc!start_el!low', 'fuzzy', 'kapusta2', 'petri_lc!False', 'tpn4', 'allgreen' ]
+algs_order = [ 
+    #'rfid_dd!250_nc!2', 'rfid_dd!250_nc!5', 'rfid_dd!1000_nc!2', 
+    'rfid_dd!1000_nc!5', 'rfid', 'djahel_wc!start_el!high', 
+    #'djahel_wc!start_el!medium', 'djahel_wc!start_el!low', 
+    'fuzzy', 'kapusta2', 'petri_lc!False', 'tpn4', 'allgreen' ]
 
 algs_names = {
     'petri_lc!False' : 'TPN',
-    'rfid_dd!1000_nc!2' : 'RFID-100-2', 'rfid_dd!250_nc!5' : 'RFID-25-5', 'rfid_dd!1000_nc!5' : 'RFID-100-5', 'rfid_dd!250_nc!2' : 'RFID-25-2',
-    'rfid' : 'RFID-100-5',
-    'djahel_wc!start_el!high' : 'Fuzzy-H', 'djahel_wc!start_el!medium' : 'Fuzzy-M', 'djahel_wc!start_el!low' : 'Fuzzy-L',
-    'fuzzy' : 'Fuzzy-H',
+    #'rfid_dd!1000_nc!2' : 'RFID-100-2', 'rfid_dd!250_nc!5' : 'RFID-25-5', 
+    #'rfid_dd!1000_nc!5' : 'RFID-100-5', 
+    'rfid_dd!1000_nc!5' : 'RFID', 
+    #'rfid_dd!250_nc!2' : 'RFID-25-2',
+    'rfid' : 'RFID',
+    #'djahel_wc!start_el!high' : 'Fuzzy-H', 
+    'djahel_wc!start_el!high' : 'Fuzzy', 
+    #'djahel_wc!start_el!medium' : 'Fuzzy-M', 'djahel_wc!start_el!low' : 'Fuzzy-L',
+    'fuzzy' : 'Fuzzy',
     'kapusta2' : 'Queue based',
     'tpn4' : 'New TPN',
     'allgreen' : 'All Green'
@@ -37,7 +46,8 @@ y_axis_labels = {
     'imp' : 'Time-Loss Improvement (times)',
     'perc' : 'Time-Loss Improvement (%)',
     'tl' : 'Time-Loss (s)',
-    'rt' : 'Runtime (s)'
+    'rt' : 'Runtime (s)',
+    'tl-ttt' : 'Time-Loss/Actual Travel Time (%)'
 }                   
 
 def get_values(df_sce,metric,scenario):
@@ -129,10 +139,9 @@ def make_bar_graph(df,scenario,alg):
     fig.update_layout(barmode='group')
     fig.show()    
 
-def make_boxplot_grouped(df,metric,title_label,figname,scenario):
+def make_boxplot_grouped(df,metric,title_label,figname,scenario, width=600, height=480):
+    df = df[(df['scenario'] == scenario) & (df[metric].notnull())]
     algs = df['alg'].unique().tolist()
-
-    df = df[df[metric].notnull()]
 
     fig = go.Figure()
 
@@ -161,4 +170,25 @@ def make_boxplot_grouped(df,metric,title_label,figname,scenario):
         )
     )
     fig.show()
-    pio.write_image(fig, 'figs/{}.png'.format(figname), format='png', width=600, height=480)     
+    pio.write_image(fig, 'figs/{}.png'.format(figname), format='png', width=width, height=height) 
+
+def make_boxplot(df,metric,title_label,figname,scenario, width=600, height=480):
+    fig = go.Figure()
+
+    df = df[df[metric].notnull()]
+
+    for i in instances:
+        tmp_df = df[(df['alg'] == 'no-preemption') & (df['instance'] == i) & (df['scenario'] == scenario)][metric]
+        fig.add_trace(go.Box(y=tmp_df.nlargest(tmp_df.size-1).tolist(), name=nvec[scenario][i]))
+
+    fig.update_layout(
+        yaxis_title=y_axis_labels[metric],
+        xaxis_title='Number of Vehicles',
+        title=title_label,
+        font=dict(
+            size=14
+        )        
+    )        
+
+    fig.show()
+    pio.write_image(fig, 'figs/{}.png'.format(figname), format='png', width=width, height=height)         

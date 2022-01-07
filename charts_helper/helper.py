@@ -31,15 +31,18 @@ scenarios = {
     'cologne' : 'TAPAS Cologne',
     'metro-od-2017' : 'Metro OD 2017 (Exp. Center of SP)',
     'metro-od-2017-zones' : 'Zones - Metro OD 2017',
-    'synth-sp': 'Synthetic SP',
-    'synth-ny': 'Synthetic NY'
+    'synth-sp': 'Synthetic SP - First Experiment',
+    'synth-ny': 'Synthetic NY - First Experiment',
+    'synth-sp-new': 'Synthetic SP - Second Experiment',
+    'synth-ny-new': 'Synthetic NY - Second Experiment'    
 }
 
 y_axis_labels = {
     'imp' : 'Time-Loss Improvement (times)',
     'perc' : 'Time-Loss Improvement (%)',
     'tl' : 'Time-Loss (s)',
-    'rt' : 'Runtime (s)'
+    'rt' : 'Runtime (s)',
+    'tl-ttt' : 'Time-Loss/Actual Travel Time (%)'
 }
 
 title_label = {
@@ -48,10 +51,11 @@ title_label = {
     'tl-perc' : 'Time-Loss Improvement - {}',
     'tl-no-preemption' : 'Time-Loss - No Preemption - {}',
     'tl-algs' : 'Time-Loss - Solutions - {}',
-    'runtime' : 'Runtime - Solutions - {}'
+    'runtime' : 'Runtime - Solutions - {}',
+    'tl-ttt' : 'Timeloss over Total Travel Time - {}'
 }
 
-def make_boxplot_grouped(df,metric,title_label,figname):
+def make_boxplot_grouped(df,metric,title_label,figname, width=600, height=480):
     evs = sorted(df['ev'].unique().tolist())
     algs = df['alg'].unique().tolist()
 
@@ -85,7 +89,7 @@ def make_boxplot_grouped(df,metric,title_label,figname):
     fig.show()
     pio.write_image(fig, 'figs/{}.png'.format(figname), format='png', width=600, height=480) 
 
-def make_boxplot(df,metric,title_label,figname):
+def make_boxplot(df,metric,title_label,figname, width=600, height=480):
     evs = sorted(df['ev'].unique().tolist())
 
     fig = go.Figure()
@@ -114,7 +118,7 @@ def csv_to_geo(df):
     geo_df2 = geo_df.groupby(['scenario', 'ev'])['geometry'].apply(lambda x: LineString(x.tolist()))
     return gpd.GeoDataFrame(geo_df2, geometry='geometry')  
 
-def make_map(df,zoom,title,figname):
+def make_map(df,zoom,title,figname, width=600, height=480):
     geo_df = csv_to_geo(df)
     lats = []
     lons = []
@@ -145,7 +149,10 @@ def make_map(df,zoom,title,figname):
             names = np.append(names, None)
             colors = np.append(colors, [name]*(len(y)+1))
 
-    fig = px.line_mapbox(lat=lats, lon=lons, hover_name=names, mapbox_style="open-street-map", zoom=zoom, color=colors, title=title)
+    lat_extreme = df[df['ev'] == 'boundary']['lat'].unique()
+    lon_extreme = df[df['ev'] == 'boundary']['lon'].unique()
+
+    fig = px.line_mapbox(lat=lats, lon=lons, hover_name=names, mapbox_style="open-street-map", zoom=zoom, color=colors, title=title, center={'lat' : np.mean(lat_extreme), 'lon': np.mean(lon_extreme)})
     fig.update_layout(
         margin={"r":0,"t":50,"l":0,"b":0},
         font=dict(
@@ -153,7 +160,7 @@ def make_map(df,zoom,title,figname):
         )
     )
     fig.show()
-    pio.write_image(fig, 'figs/{}.png'.format(figname), format='png', width=600, height=480)        
+    pio.write_image(fig, 'figs/{}.png'.format(figname), format='png', width=width, height=height)        
 
 def make_title(title,key):
     return title_label[title].format(scenarios[key])
