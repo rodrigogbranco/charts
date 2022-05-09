@@ -87,7 +87,7 @@ def make_boxplot_grouped(df,metric,title_label,figname, width=600, height=480):
         )
     )
     fig.show()
-    pio.write_image(fig, 'figs/{}.png'.format(figname), format='png', width=600, height=480) 
+    pio.write_image(fig, 'figs/{}.pdf'.format(figname), format='pdf', width=600, height=480) 
 
 def make_boxplot(df,metric,title_label,figname, width=600, height=480):
     evs = sorted(df['ev'].unique().tolist())
@@ -109,7 +109,7 @@ def make_boxplot(df,metric,title_label,figname, width=600, height=480):
     )        
 
     fig.show()
-    pio.write_image(fig, 'figs/{}.png'.format(figname), format='png', width=600, height=480)  
+    pio.write_image(fig, 'figs/{}.pdf'.format(figname), format='pdf', width=600, height=480)  
 
 def csv_to_geo(df):
     geometry = [Point(xy) for xy in zip(df.lon, df.lat)]
@@ -160,7 +160,7 @@ def make_map(df,zoom,title,figname, width=600, height=480):
         )
     )
     fig.show()
-    pio.write_image(fig, 'figs/{}.png'.format(figname), format='png', width=width, height=height)        
+    pio.write_image(fig, 'figs/{}.pdf'.format(figname), format='pdf', width=width, height=height)        
 
 def make_title(title,key):
     return title_label[title].format(scenarios[key])

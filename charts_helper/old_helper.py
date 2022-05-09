@@ -170,7 +170,7 @@ def make_boxplot_grouped(df,metric,title_label,figname,scenario, width=600, heig
         )
     )
     fig.show()
-    pio.write_image(fig, 'figs/{}.png'.format(figname), format='png', width=width, height=height) 
+    pio.write_image(fig, 'figs/{}.pdf'.format(figname), format='pdf', width=width, height=height) 
 
 def make_boxplot(df,metric,title_label,figname,scenario, width=600, height=480):
     fig = go.Figure()
@@ -191,4 +191,4 @@ def make_boxplot(df,metric,title_label,figname,scenario, width=600, height=480):
     )        
 
     fig.show()
-    pio.write_image(fig, 'figs/{}.png'.format(figname), format='png', width=width, height=height)         
+    pio.write_image(fig, 'figs/{}.pdf'.format(figname), format='pdf', width=width, height=height)         
