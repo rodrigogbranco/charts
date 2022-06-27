@@ -96,14 +96,14 @@ title_label = {'en': {
     'tl-ttt': 'Timeloss over Total Travel Time - {}',
     'preemptime': 'Mean Preemption Time'},
     'br': {
-    'route': 'Rotas - {}',
-    'tl-imp': 'Melhoria do Tempo Perdido - {}',
-    'tl-perc': 'Melhoria do Tempo Perdido - {}',
-    'tl-no-preemption': 'Tempo Perdido - Sem Preempção - {}',
-    'tl-algs': 'Tempo Perdido - Soluções - {}',
-    'runtime': 'Tempo de Execução - Soluções - {}',
-    'tl-ttt': 'Tempo Perdido sobre Tempo Total de Viagem - {}',
-    'preemptime': 'Tempo de Preempção Médio'}
+    'route': 'Rotas - Cenário {}',
+    'tl-imp': 'Melhoria do Tempo Perdido - Cenário {}',
+    'tl-perc': 'Melhoria do Tempo Perdido - Cenário {}',
+    'tl-no-preemption': 'Tempo Perdido - Sem Preempção - Cenário {}',
+    'tl-algs': 'Tempo Perdido - Soluções - Cenário {}',
+    'runtime': 'Tempo de Execução - Soluções - Cenário {}',
+    'tl-ttt': 'Tempo Perdido sobre Tempo Total de Viagem - Cenário {}',
+    'preemptime': 'Tempo de Preempção Médio - Cenário {}'}
 }
 
 
