@@ -64,7 +64,7 @@ scenarios = {'en': {
     'synth-ny': 'Synthetic NY - First Experiment',
     'synth-sp-new': 'Synthetic SP - Second Experiment',
     'synth-ny-new': 'Synthetic NY - Second Experiment',
-    'oneintersection': 'Uma Intersecção',
+    'oneintersection': 'Uma Interseção',
     'turinkap': 'Turim',
     'colognekap': 'Colônia'}
 
