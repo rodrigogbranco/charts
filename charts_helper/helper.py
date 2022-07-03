@@ -36,7 +36,7 @@ algs_name = {
         'allgreen': 'Tudo Verde',
         'tpn4': 'TPN',
         'fuzzy': 'Fuzzy',
-        'rfid': 'RFId',
+        'rfid': 'RFID',
         'no-preemption': 'Sem Preempção', }
 }
 
