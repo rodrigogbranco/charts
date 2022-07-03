@@ -9,17 +9,17 @@ import plotly.express as px
 import plotly.io as pio
 
 evs_name = {
-    'en': {'vehev1': 'EV1', 'vehev2': 'EV2', 'vehev3': 'EV3',
+    'en': {'vehev1': 'EV1', 'vehev2': 'VE2', 'vehev3': 'EV3',
            'vehev4': 'EV1-Synthetic', 'vehev5': 'EV2-Synthetic', 'vehev6': 'EV3-Synthetic',
            'vehev7': 'EV4',
            'veh11651': 'EV',
            'veh4856': 'EV',
            'boundary': 'Experiment Area', 'expcenter': 'Expanded Center'},
-    'br': {'vehev1': 'EV1', 'vehev2': 'EV2', 'vehev3': 'EV3',
-           'vehev4': 'EV1-Sintético', 'vehev5': 'EV2-Sintético', 'vehev6': 'EV3-Sintético',
-           'vehev7': 'EV4',
-           'veh11651': 'EV',
-           'veh4856': 'EV',
+    'br': {'vehev1': 'VE1', 'vehev2': 'VE2', 'vehev3': 'VE3',
+           'vehev4': 'VE1-Sintético', 'vehev5': 'VE2-Sintético', 'vehev6': 'VE3-Sintético',
+           'vehev7': 'VE4',
+           'veh11651': 'VE',
+           'veh4856': 'VE',
            'boundary': 'Área do Experimento', 'expcenter': 'Centro Expandido'}}
 algs_name = {
     'en': {
