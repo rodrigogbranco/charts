@@ -54,7 +54,7 @@ algs_names = {
         "fuzzy": "Fuzzy",
         "kapusta2": "Filas",
         "tpn4": "Nova TPN",
-        "allgreen": "Tudo Verde",
+        "allgreen": "Onda Verde",
     },
 }
 
