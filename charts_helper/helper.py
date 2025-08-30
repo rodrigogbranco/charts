@@ -95,7 +95,7 @@ scenarios = {
     "br": {
         "turin": "Turim",
         "cologne": "Colônia",
-        "metro-od-2017": "Centro Expandido - Metro OD SP 2017",
+        "metro-od-2017": "Centro Expandido - Metrô OD SP 2017",
         "metro-od-2017-zones": "Zones - Metro OD 2017",
         "synth-sp": "São Paulo - Sintético",
         "synth-ny": "Nova York - Sintético",
