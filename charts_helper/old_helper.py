@@ -72,9 +72,10 @@ y_axis_labels = {
         "imp": "Melhoria do Tempo Perdido (vezes)",
         "perc": "Melhoria do Tempo Perdido (%)",
         "tl": "Tempo Perdido (s)",
+        "tl-div": "Tempo Perdido (x1000s)",
         "rt": "Tempo de Execução (s)",
         "tl-ttt": "Tempo Perdido/Tempo Total de Viagem (%)",
-    },
+    },    
 }
 
 x_axis_labels = {"en": "Number of Vehicles", "br": "Número de Veículos"}
@@ -246,6 +247,7 @@ def make_boxplot(
     height=480,
     lang="en",
     output_dir="figs",
+    divisor=1,
 ):
     fig = go.Figure()
 
@@ -258,11 +260,11 @@ def make_boxplot(
             & (df["scenario"] == scenario)
         ][metric]
         fig.add_trace(
-            go.Box(y=tmp_df.nlargest(tmp_df.size - 1).tolist(), name=nvec[scenario][i])
+            go.Box(y=tmp_df.nlargest(tmp_df.size - 1).div(divisor).tolist(), name=nvec[scenario][i])
         )
 
     fig.update_layout(
-        yaxis_title=y_axis_labels[lang][metric],
+        yaxis_title=y_axis_labels[lang]["{}{}".format(metric, "-div" if divisor > 1 else "")],
         xaxis_title=x_axis_labels[lang],
         title=title_label,
         font=dict(size=14),

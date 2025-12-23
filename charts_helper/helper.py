@@ -125,9 +125,11 @@ y_axis_labels = {
         "imp": "Melhoria do Tempo Perdido (vezes)",
         "perc": "Melhoria do Tempo Perdido (%)",
         "tl": "Tempo Perdido (s)",
+        "tl-div": "Tempo Perdido (x1000s)",
         "rt": "Tempo de Execução (s)",
         "tl-ttt": "Tempo Perdido/Tempo Total de Viagem (%)",
         "preemptime": "Tempo de Preempção Médio (s)",
+        "preemptime-div": "Tempo de Preempção Médio (x1000s)",
         "n_teleported": "Veículos Teletransportados",
         "avg_trip_speed_perc": "Velocidade Média (%)",
         "avg_trip_timeloss_perc": "Tempo Perdido Médio (%)",
@@ -214,6 +216,7 @@ def make_boxplot_grouped(
     height=480,
     lang="en",
     output_dir="figs",
+    divisor=1,
 ):
     evs = sorted(df["ev"].unique().tolist())
     algs = df["alg"].unique().tolist()
@@ -228,7 +231,7 @@ def make_boxplot_grouped(
         print("{}: ".format(alg))
         for ev in evs:
             tmp_df = df[(df["alg"] == alg) & (df["ev"] == ev)][metric]
-            values = tmp_df.nlargest(tmp_df.size - 1).tolist()
+            values = tmp_df.nlargest(tmp_df.size - 1).div(divisor).tolist()
             xlabels += [evs_name[lang][ev]] * len(values)
             complete_values += values
             get_quartiles_data(values, evs_name[lang][ev])
@@ -237,7 +240,7 @@ def make_boxplot_grouped(
         fig.add_trace(go.Box(y=complete_values, x=xlabels, name=algs_name[lang][alg]))
 
     fig.update_layout(
-        yaxis_title=y_axis_labels[lang][metric],
+        yaxis_title=y_axis_labels[lang]["{}{}".format(metric, "-div" if divisor > 1 else "")],
         title=title_label,
         boxmode="group",
         font=dict(size=14),
@@ -268,6 +271,7 @@ def make_boxplot(
     height=480,
     lang="en",
     output_dir="figs",
+    divisor=1,
 ):
     evs = sorted(df["ev"].unique().tolist())
 
@@ -277,12 +281,12 @@ def make_boxplot(
 
     for ev in evs:
         tmp_df = df[(df["alg"] == "no-preemption") & (df["ev"] == ev)][metric]
-        dataframe = tmp_df.nlargest(tmp_df.size - 1).tolist()
+        dataframe = tmp_df.nlargest(tmp_df.size - 1).div(divisor).tolist()
         fig.add_trace(go.Box(y=dataframe, name=evs_name[lang][ev]))
         get_quartiles_data(dataframe, evs_name[lang][ev])
 
     fig.update_layout(
-        yaxis_title=y_axis_labels[lang][metric], title=title_label, font=dict(size=14)
+        yaxis_title=y_axis_labels[lang]["{}{}".format(metric, "-div" if divisor > 1 else "")], title=title_label, font=dict(size=14)
     )
 
     fig.show()
