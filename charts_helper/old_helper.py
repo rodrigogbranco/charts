@@ -78,7 +78,7 @@ y_axis_labels = {
     },    
 }
 
-x_axis_labels = {"en": "Number of Vehicles", "br": "Número de Veículos"}
+x_axis_labels = {"en": "Number of Vehicles", "br": "Quantidade de Veículos"}
 
 
 def get_values(df_sce, metric, scenario):
