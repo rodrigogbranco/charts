@@ -54,11 +54,11 @@ algs_name = {
     },
     "br": {
         "kapusta2": "Filas",
-        "kapustaimp": "Choque de Onda",
+        "kapustaimp": "Onda de Choque",
         "allgreen": "Onda Verde",
         "tpn4": "TPN",
         "tpn6": "TPN6",
-        "tpnx": "Choque de Onda + TPN*",
+        "tpnx": "Onda de Choque + TPN*",
         "fuzzy": "Fuzzy",
         "rfid": "RFID",
         "no-preemption": "Sem Preempção",
